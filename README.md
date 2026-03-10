@@ -30,11 +30,8 @@ Resolver a assimetria de informação na contratação de prestadores de serviç
 | REQ04 | Registrar avaliação de prestador | F | ✅ | ✅ | ✅ |
 | REQ05 | Buscar e filtrar prestadores | F | ✅ | ✅ | ✅ |
 | REQ06 | Gerar ranking de prestadores | F | ✅ | ✅ | ✅ |
-| REQ07 | Resumir avaliações com IA (Claude) | F | ✅ | ✅ | ✅ |
-| REQ08 | Controle de acesso por autenticação fechada | NF | ✅ | ✅ | ✅ |
-| REQ09 | Desempenho — tempo de resposta | NF | ✅ | ✅ | ✅ |
-| REQ10 | Compatibilidade de navegadores | NF | ✅ | ✅ | ✅ |
-| REQ11 | Conformidade com LGPD | NF | ✅ | ✅ | ✅ |
+| REQ07 | Controle de acesso por autenticação fechada | NF | ✅ | ✅ | ✅ |
+| REQ08 | Desempenho — tempo de resposta | NF | ✅ | ✅ | ✅ |
 
 ---
 
@@ -120,3 +117,4 @@ Resolver a assimetria de informação na contratação de prestadores de serviç
 - Requisições que ultrapassem o limite devem retornar resposta parcial com indicador de carregamento, sem travar a interface.
 
 ---
+
