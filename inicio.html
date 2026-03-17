@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>VizinhoPro - Dashboard</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#1e3b8a",
+                        "accent": "#10b981",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#121620",
+                    },
+                    fontFamily: { "display": ["Inter", "sans-serif"] },
+                    borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 antialiased">
+    <script src="data.js"></script>
+    <script src="auth.js"></script>
+<div class="relative flex min-h-screen flex-col overflow-x-hidden">
+<header class="sticky top-0 z-50 w-full border-b border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-background-dark/80 backdrop-blur-md px-6 md:px-10 py-3">
+<div class="mx-auto flex max-w-7xl items-center justify-between gap-8">
+    <div class="flex items-center gap-8">
+        <a href="inicio.html" class="flex items-center gap-2 text-primary dark:text-blue-400 no-underline">
+            <span class="material-symbols-outlined text-3xl font-bold">handshake</span>
+            <h2 class="text-xl font-bold tracking-tight">VizinhoPro</h2>
+        </a>
+        <nav class="hidden md:flex items-center gap-8">
+            <a class="text-sm font-semibold text-primary border-b-2 border-primary pb-1" href="inicio.html">Início</a>
+            <a class="text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-primary dark:hover:text-blue-400 transition-colors" href="busca_e_avaliacao.html">Busca</a>
+            <a class="text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-primary dark:hover:text-blue-400 transition-colors" href="indicar_profissional.html">Indicar</a>
+            <a class="text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-primary dark:hover:text-blue-400 transition-colors" href="cadastro_de_morador.html" data-admin-only>Painel Admin</a>
+        </nav>
+    </div>
+    <div class="flex flex-1 justify-end gap-4 items-center">
+        <div class="relative hidden sm:block w-full max-w-xs">
+            <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xl">search</span>
+            <input id="header-search" class="w-full rounded-xl bg-slate-100 dark:bg-slate-800 border-none pl-10 pr-4 py-2 text-sm focus:ring-2 focus:ring-primary/50 outline-none" placeholder="Buscar serviços..." type="text" onkeydown="if(event.key==='Enter'){window.location.href='busca_e_avaliacao.html';}"/>
+        </div>
+        <div class="flex items-center gap-3">
+            <span class="text-sm font-medium text-slate-600 dark:text-slate-400 hidden sm:block" data-user-name></span>
+            <div class="h-10 w-10 rounded-full bg-primary text-white flex items-center justify-center font-bold text-sm cursor-pointer" data-user-avatar></div>
+            <button data-logout class="flex items-center justify-center rounded-lg bg-slate-100 dark:bg-slate-800 p-2 text-slate-600 dark:text-slate-400 hover:bg-red-50 hover:text-red-500 transition-colors" title="Sair">
+                <span class="material-symbols-outlined text-xl">logout</span>
+            </button>
+        </div>
+    </div>
+</div>
+</header>
+
+<main class="flex-1">
+<!-- Hero -->
+<section class="px-6 md:px-10 py-8">
+<div class="mx-auto max-w-7xl">
+    <div class="relative overflow-hidden rounded-3xl bg-primary px-8 py-16 md:px-16 md:py-24 text-white shadow-2xl">
+        <div class="absolute inset-0 opacity-10" style="background-image: radial-gradient(circle at 2px 2px, white 1px, transparent 0); background-size: 24px 24px;"></div>
+        <div class="relative z-10 flex flex-col items-center text-center gap-8 max-w-3xl mx-auto">
+            <div class="space-y-4">
+                <h1 class="text-4xl md:text-6xl font-black leading-tight tracking-tight">
+                    Bem-vindo à rede de confiança do seu condomínio
+                </h1>
+                <p class="text-lg md:text-xl text-blue-100 font-medium">
+                    Encontre profissionais qualificados e recomendados por quem você já conhece: seus vizinhos.
+                </p>
+            </div>
+            <div class="flex flex-col sm:flex-row gap-4 w-full justify-center">
+                <a href="busca_e_avaliacao.html" class="flex items-center justify-center gap-2 rounded-xl bg-accent hover:bg-emerald-500 transition-all px-8 py-4 text-lg font-bold shadow-lg shadow-accent/20 no-underline text-white">
+                    <span class="material-symbols-outlined">search</span>
+                    Buscar Profissional
+                </a>
+                <a href="indicar_profissional.html" class="flex items-center justify-center gap-2 rounded-xl bg-white/10 hover:bg-white/20 backdrop-blur-sm border border-white/30 transition-all px-8 py-4 text-lg font-bold no-underline text-white">
+                    <span class="material-symbols-outlined">thumb_up</span>
+                    Indicar um Profissional
+                </a>
+            </div>
+        </div>
+        <div class="absolute -bottom-12 -right-12 h-64 w-64 rounded-full bg-blue-400/20 blur-3xl"></div>
+        <div class="absolute -top-12 -left-12 h-64 w-64 rounded-full bg-emerald-400/10 blur-3xl"></div>
+    </div>
+</div>
+</section>
+
+<!-- Ranking Dinâmico (REQ06) -->
+<section class="px-6 md:px-10 py-12">
+<div class="mx-auto max-w-7xl">
+    <div class="flex items-end justify-between mb-8 px-2">
+        <div class="space-y-1">
+            <h2 class="text-2xl md:text-3xl font-bold tracking-tight text-slate-900 dark:text-white">Ranking — Profissionais Mais Bem Avaliados</h2>
+            <p class="text-slate-500 dark:text-slate-400">Ranking atualizado com base nas avaliações dos moradores</p>
+        </div>
+        <a class="text-primary font-semibold flex items-center gap-1 hover:underline" href="busca_e_avaliacao.html">
+            Ver todos <span class="material-symbols-outlined">arrow_forward</span>
+        </a>
+    </div>
+    <div id="ranking-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Cards gerados dinamicamente via JS -->
+    </div>
+</div>
+</section>
+
+<!-- Seção de Confiança -->
+<section class="px-6 md:px-10 py-12 bg-white dark:bg-slate-900/50">
+<div class="mx-auto max-w-7xl">
+    <div class="flex flex-col md:flex-row items-center gap-12">
+        <div class="flex-1 space-y-6">
+            <div class="inline-flex items-center gap-2 rounded-full bg-primary/10 px-3 py-1 text-sm font-bold text-primary">
+                <span class="material-symbols-outlined text-lg">verified</span>
+                Rede de Confiança
+            </div>
+            <h2 class="text-3xl md:text-4xl font-bold leading-tight text-slate-900 dark:text-white">
+                Por que confiar no VizinhoPro?
+            </h2>
+            <p class="text-lg text-slate-600 dark:text-slate-400 leading-relaxed">
+                Nossa plataforma foi criada para resolver o problema da insegurança ao contratar serviços. Aqui, as avaliações são reais, feitas por pessoas que vivem no seu condomínio.
+            </p>
+            <ul class="space-y-4">
+                <li class="flex items-center gap-3 text-slate-700 dark:text-slate-300 font-medium">
+                    <span class="material-symbols-outlined text-accent font-bold">check_circle</span>
+                    Profissionais verificados pela comunidade
+                </li>
+                <li class="flex items-center gap-3 text-slate-700 dark:text-slate-300 font-medium">
+                    <span class="material-symbols-outlined text-accent font-bold">check_circle</span>
+                    Histórico transparente de serviços realizados
+                </li>
+                <li class="flex items-center gap-3 text-slate-700 dark:text-slate-300 font-medium">
+                    <span class="material-symbols-outlined text-accent font-bold">check_circle</span>
+                    Acesso restrito a moradores aprovados (LGPD)
+                </li>
+            </ul>
+        </div>
+        <div class="flex-1 w-full">
+            <div class="relative rounded-3xl overflow-hidden aspect-video shadow-2xl border-4 border-white dark:border-slate-800">
+                <div class="absolute inset-0 bg-slate-200 animate-pulse"></div>
+                <img class="relative z-10 w-full h-full object-cover" alt="Duas pessoas apertando as mãos em sinal de acordo de serviço" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAssGBPH6h2zTmHq95yPjbBGyh60YuwEgj-TEMP-sIa1gLzRN3CHHfl9C7b5LFWteBsCZhXyHhfIXC6_HxopvTBB18dNDsoTOJB2JMIMdUr3tZjxUDfixDv1jiGFh3FqMOs0iS1fG_XDCwe9kCDV6bW9MIW9Pa3WgmiNwXZvjyhbcnOXyOLdpgvIWnjtLBG0I5NPsBSsr3PfA4trcWvF1UnOBEhjrHRzSo9i83LO_6Jeqqng33ZJ2O6dRk0aRFGTaHjvoR_rj4DLbQ"/>
+            </div>
+        </div>
+    </div>
+</div>
+</section>
+</main>
+
+<footer class="bg-slate-50 dark:bg-background-dark border-t border-slate-200 dark:border-slate-800 px-6 md:px-10 py-12 mt-auto">
+<div class="mx-auto max-w-7xl flex flex-col md:flex-row justify-between gap-12">
+    <div class="max-w-xs space-y-4">
+        <div class="flex items-center gap-2 text-primary dark:text-blue-400">
+            <span class="material-symbols-outlined text-2xl font-bold">handshake</span>
+            <h2 class="text-lg font-bold tracking-tight">VizinhoPro</h2>
+        </div>
+        <p class="text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
+            Conectando vizinhos aos melhores prestadores de serviço com segurança e praticidade.
+        </p>
+    </div>
+    <div class="grid grid-cols-2 sm:grid-cols-3 gap-8">
+        <div class="space-y-4">
+            <h4 class="text-sm font-bold uppercase tracking-wider text-slate-900 dark:text-white">Plataforma</h4>
+            <nav class="flex flex-col gap-2">
+                <a class="text-sm text-slate-600 dark:text-slate-400 hover:text-primary transition-colors" href="inicio.html">Início</a>
+                <a class="text-sm text-slate-600 dark:text-slate-400 hover:text-primary transition-colors" href="busca_e_avaliacao.html">Busca</a>
+                <a class="text-sm text-slate-600 dark:text-slate-400 hover:text-primary transition-colors" href="indicar_profissional.html">Indicações</a>
+            </nav>
+        </div>
+        <div class="space-y-4">
+            <h4 class="text-sm font-bold uppercase tracking-wider text-slate-900 dark:text-white">Suporte</h4>
+            <nav class="flex flex-col gap-2">
+                <a class="text-sm text-slate-600 dark:text-slate-400 hover:text-primary transition-colors" href="#">FAQ</a>
+                <a class="text-sm text-slate-600 dark:text-slate-400 hover:text-primary transition-colors" href="#">Contato</a>
+                <a class="text-sm text-slate-600 dark:text-slate-400 hover:text-primary transition-colors" href="#">Privacidade</a>
+            </nav>
+        </div>
+    </div>
+</div>
+<div class="mx-auto max-w-7xl border-t border-slate-200 dark:border-slate-800 mt-12 pt-8 flex flex-col sm:flex-row justify-between items-center gap-4">
+    <p class="text-xs text-slate-400 dark:text-slate-600">© 2024 VizinhoPro. Todos os direitos reservados.</p>
+    <div class="flex items-center gap-2 text-xs text-slate-400 dark:text-slate-600">
+        Feito com <span class="material-symbols-outlined text-rose-500 text-xs" style="font-variation-settings: 'FILL' 1">favorite</span> para o seu condomínio.
+    </div>
+</div>
+</footer>
+</div>
+
+<script>
+// Controle de acesso (REQ08)
+const currentUser = requireAuth();
+renderUserHeader();
+
+(async function init() {
+    await renderRanking();
+})();
+
+async function renderRanking() {
+    const container = document.getElementById('ranking-container');
+    container.innerHTML = '<p class="text-slate-500 col-span-full text-center py-12"><span class="material-symbols-outlined animate-spin text-primary mr-2">progress_activity</span>Carregando ranking...</p>';
+    const ranked = await getRanking();
+    
+    if (ranked.length === 0) {
+        container.innerHTML = '<p class="text-slate-500 col-span-full text-center py-12">Nenhum profissional cadastrado ainda.</p>';
+        return;
+    }
+    
+    container.innerHTML = ranked.map((p, i) => {
+        const catIcon = getCategoriaIcon(p.categoria);
+        const catLabel = getCategoriaLabel(p.categoria);
+        const defaultImg = `data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><rect fill='%231e3b8a' width='200' height='200' rx='16'/><text x='100' y='115' text-anchor='middle' fill='white' font-size='64' font-family='Arial'>${p.nome.split(' ').map(n=>n[0]).join('').slice(0,2)}</text></svg>`;
+        const imgSrc = p.imagem || defaultImg;
+        const badge = p.insuficiente 
+            ? '<span class="inline-flex items-center gap-1 text-xs text-amber-600 bg-amber-50 dark:bg-amber-900/20 dark:text-amber-400 px-2 py-1 rounded-full font-medium"><span class="material-symbols-outlined text-xs">warning</span>Avaliações insuficientes</span>'
+            : '';
+        const starsHtml = p.total > 0 
+            ? `<div class="flex items-center bg-yellow-50 dark:bg-yellow-900/20 px-2 py-1 rounded-lg text-sm font-bold text-yellow-700 dark:text-yellow-400">
+                    <span class="material-symbols-outlined text-amber-400 text-sm" style="font-variation-settings: 'FILL' 1">star</span>
+                    ${p.media}
+                    <span class="text-slate-400 font-normal ml-1 text-xs">(${p.total})</span>
+               </div>`
+            : '<span class="text-xs text-slate-400 italic">Sem avaliações</span>';
+
+        return `
+        <div class="group flex flex-col rounded-2xl bg-white dark:bg-slate-900 p-4 shadow-sm hover:shadow-xl transition-all duration-300 border border-slate-100 dark:border-slate-800">
+            <div class="relative h-48 w-full overflow-hidden rounded-xl mb-4">
+                <div class="absolute top-3 right-3 z-10">
+                    ${starsHtml}
+                </div>
+                ${i < 3 && p.total >= 2 ? `<div class="absolute top-3 left-3 z-10 bg-primary text-white text-xs font-bold px-2 py-1 rounded-lg flex items-center gap-1"><span class="material-symbols-outlined text-xs">emoji_events</span>#${i+1}</div>` : ''}
+                <div class="h-full w-full bg-cover bg-center transition-transform duration-500 group-hover:scale-110 bg-slate-200" style="background-image: url('${imgSrc}')"></div>
+            </div>
+            <div class="px-2 flex flex-col flex-1">
+                <h3 class="text-lg font-bold text-slate-900 dark:text-white">${p.nome}</h3>
+                <p class="text-sm font-medium text-primary mb-1 flex items-center gap-1">
+                    <span class="material-symbols-outlined text-sm ${catIcon.color}">${catIcon.icon}</span>
+                    ${catLabel}
+                </p>
+                ${badge ? `<div class="mb-2">${badge}</div>` : ''}
+                <p class="text-xs text-slate-500 dark:text-slate-400 line-clamp-2 mb-4 flex-1">${p.descricao}</p>
+                <a href="busca_e_avaliacao.html" class="w-full rounded-lg bg-slate-100 dark:bg-slate-800 py-2.5 text-sm font-bold text-slate-900 dark:text-white hover:bg-primary hover:text-white dark:hover:bg-primary transition-colors block text-center no-underline">
+                    Ver Perfil Completo
+                </a>
+            </div>
+        </div>`;
+    }).join('');
+}
+</script>
+</body>
+</html>

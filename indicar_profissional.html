@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>VizinhoPro - Indicar Profissional</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#1e3b8a",
+                        "accent": "#10b981",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#121620",
+                    },
+                    fontFamily: { "display": ["Inter", "sans-serif"] },
+                    borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 transition-colors duration-300">
+    <script src="data.js"></script>
+    <script src="auth.js"></script>
+<div class="relative flex min-h-screen w-full flex-col overflow-x-hidden">
+<div class="layout-container flex h-full grow flex-col">
+<!-- Header -->
+<header class="flex items-center justify-between whitespace-nowrap border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 px-6 md:px-20 py-4 sticky top-0 z-50">
+    <div class="flex items-center gap-3">
+        <a href="inicio.html" class="flex items-center gap-3 no-underline">
+            <div class="size-10 bg-primary text-white flex items-center justify-center rounded-lg">
+                <span class="material-symbols-outlined">handshake</span>
+            </div>
+            <h2 class="text-primary dark:text-slate-100 text-xl font-bold leading-tight tracking-tight">VizinhoPro</h2>
+        </a>
+    </div>
+    <nav class="hidden md:flex items-center gap-6">
+        <a class="text-sm font-medium hover:text-primary transition-colors" href="inicio.html">Início</a>
+        <a class="text-sm font-medium hover:text-primary transition-colors" href="busca_e_avaliacao.html">Busca</a>
+        <a class="text-sm font-semibold text-primary underline underline-offset-4" href="indicar_profissional.html">Indicar</a>
+        <a class="text-sm font-medium hover:text-primary transition-colors" href="cadastro_de_morador.html" data-admin-only>Painel Admin</a>
+    </nav>
+    <div class="flex items-center gap-4">
+        <span class="text-sm font-medium text-slate-600 hidden sm:block" data-user-name></span>
+        <div class="size-10 rounded-full bg-primary text-white flex items-center justify-center font-bold text-sm" data-user-avatar></div>
+        <button data-logout class="flex size-10 items-center justify-center rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-red-50 hover:text-red-500 transition-colors" title="Sair">
+            <span class="material-symbols-outlined">logout</span>
+        </button>
+    </div>
+</header>
+
+<main class="flex flex-1 justify-center py-10 px-6">
+<div class="layout-content-container flex flex-col max-w-[640px] flex-1 space-y-8">
+    <!-- Header -->
+    <div class="flex flex-col gap-2">
+        <div class="flex items-center gap-2 text-accent font-semibold">
+            <span class="material-symbols-outlined text-sm">verified</span>
+            <span class="text-sm uppercase tracking-wider">Contribuição Comunitária</span>
+        </div>
+        <h1 class="text-slate-900 dark:text-slate-50 text-3xl md:text-4xl font-extrabold leading-tight">Cadastrar Prestador de Serviço</h1>
+        <p class="text-slate-500 dark:text-slate-400 text-base">Ajude seus vizinhos a encontrar serviços confiáveis. Sua indicação faz a diferença na nossa comunidade.</p>
+    </div>
+
+    <!-- Formulário (REQ03) -->
+    <div class="bg-white dark:bg-slate-900 rounded-xl p-6 md:p-8 shadow-sm border border-slate-200 dark:border-slate-800">
+        <form id="indication-form" class="space-y-6" onsubmit="return false;">
+            <!-- Nome -->
+            <div class="flex flex-col gap-2">
+                <label class="text-slate-700 dark:text-slate-200 text-sm font-semibold" for="pro-name">Nome Completo do Profissional <span class="text-red-400">*</span></label>
+                <div class="relative">
+                    <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">person</span>
+                    <input class="w-full pl-12 pr-4 py-3.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:ring-2 focus:ring-primary focus:border-primary transition-all text-slate-900 dark:text-slate-100" id="pro-name" placeholder="Ex: João da Silva" type="text"/>
+                </div>
+            </div>
+
+            <!-- Categoria (REQ03 — lista pré-definida) -->
+            <div class="flex flex-col gap-2">
+                <label class="text-slate-700 dark:text-slate-200 text-sm font-semibold" for="category">Categoria do Serviço <span class="text-red-400">*</span></label>
+                <div class="relative">
+                    <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">home_repair_service</span>
+                    <select class="w-full pl-12 pr-10 py-3.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:ring-2 focus:ring-primary focus:border-primary appearance-none transition-all text-slate-900 dark:text-slate-100" id="category">
+                        <option disabled selected value="">Selecione o tipo de serviço</option>
+                        <option value="hidraulica">Hidráulica / Encanamento</option>
+                        <option value="eletrica">Elétrica</option>
+                        <option value="limpeza">Serviços de Limpeza</option>
+                        <option value="jardinagem">Jardinagem e Paisagismo</option>
+                        <option value="pintura">Pintura</option>
+                        <option value="ar-condicionado">Ar-Condicionado</option>
+                        <option value="marcenaria">Marcenaria</option>
+                        <option value="outro">Outro</option>
+                    </select>
+                    <span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none">expand_more</span>
+                </div>
+            </div>
+
+            <!-- Telefone (REQ03 — pelo menos um contato obrigatório) -->
+            <div class="flex flex-col gap-2">
+                <label class="text-slate-700 dark:text-slate-200 text-sm font-semibold" for="phone">Telefone / WhatsApp</label>
+                <div class="relative">
+                    <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">call</span>
+                    <input class="w-full pl-12 pr-4 py-3.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:ring-2 focus:ring-primary focus:border-primary transition-all text-slate-900 dark:text-slate-100" id="phone" placeholder="(00) 00000-0000" type="tel"/>
+                </div>
+            </div>
+
+            <!-- E-mail (REQ03 — contato alternativo) -->
+            <div class="flex flex-col gap-2">
+                <label class="text-slate-700 dark:text-slate-200 text-sm font-semibold" for="pro-email">E-mail do Profissional</label>
+                <div class="relative">
+                    <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">mail</span>
+                    <input class="w-full pl-12 pr-4 py-3.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:ring-2 focus:ring-primary focus:border-primary transition-all text-slate-900 dark:text-slate-100" id="pro-email" placeholder="profissional@email.com" type="email"/>
+                </div>
+                <p class="text-xs text-slate-400"><span class="text-red-400">*</span> Pelo menos um contato (telefone ou e-mail) é obrigatório.</p>
+            </div>
+
+            <!-- Observações -->
+            <div class="flex flex-col gap-2">
+                <label class="text-slate-700 dark:text-slate-200 text-sm font-semibold" for="description">Observações Gerais</label>
+                <div class="relative">
+                    <span class="material-symbols-outlined absolute left-4 top-4 text-slate-400">edit_note</span>
+                    <textarea class="w-full pl-12 pr-4 py-3.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:ring-2 focus:ring-primary focus:border-primary transition-all text-slate-900 dark:text-slate-100 resize-none" id="description" placeholder="Conte aos seus vizinhos por que você recomenda este profissional..." rows="4"></textarea>
+                </div>
+            </div>
+
+            <!-- Botão de Envio -->
+            <div class="pt-4">
+                <button onclick="enviarIndicacao()" class="w-full bg-primary hover:bg-primary/90 text-white font-bold py-4 rounded-lg shadow-lg shadow-primary/20 flex items-center justify-center gap-2 transition-transform active:scale-[0.98]" type="button">
+                    <span class="material-symbols-outlined">send</span>
+                    Cadastrar Profissional
+                </button>
+                <p class="text-center text-xs text-slate-400 dark:text-slate-500 mt-4 italic">O cadastro será visível para todos os moradores verificados do condomínio.</p>
+            </div>
+        </form>
+    </div>
+
+    <!-- Info do registro -->
+    <div class="flex items-start gap-4 p-5 rounded-xl bg-primary/5 border border-primary/10">
+        <div class="p-2 bg-primary/20 rounded-full text-primary shrink-0">
+            <span class="material-symbols-outlined text-xl">info</span>
+        </div>
+        <div>
+            <h4 class="text-primary font-bold text-sm">Rastreabilidade</h4>
+            <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed mt-1" id="register-info">
+                <!-- Preenchido via JS com dados do morador logado -->
+            </p>
+        </div>
+    </div>
+
+    <!-- Dica -->
+    <div class="flex items-start gap-4 p-5 rounded-xl bg-accent/10 border border-accent/20">
+        <div class="p-2 bg-accent/20 rounded-full text-accent shrink-0">
+            <span class="material-symbols-outlined text-xl">lightbulb</span>
+        </div>
+        <div>
+            <h4 class="text-accent font-bold text-sm">Dica Importante</h4>
+            <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed mt-1">
+                Descrições detalhadas com informações sobre preços, pontualidade e tarefas específicas realizadas ajudam os vizinhos a tomar melhores decisões.
+            </p>
+        </div>
+    </div>
+</div>
+</main>
+
+<!-- Footer -->
+<footer class="py-10 border-t border-slate-200 dark:border-slate-800">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-4">
+    <p class="text-slate-400 text-sm">© 2024 VizinhoPro. Feito para comunidades mais fortes.</p>
+    <div class="flex gap-8 text-sm text-slate-500">
+        <a class="hover:text-primary" href="inicio.html">Início</a>
+        <a class="hover:text-primary" href="busca_e_avaliacao.html">Busca</a>
+        <a class="hover:text-primary" href="cadastro_de_morador.html" data-admin-only>Admin</a>
+    </div>
+</div>
+</footer>
+</div>
+</div>
+
+<!-- Toast -->
+<div id="toast" class="fixed bottom-6 right-6 bg-emerald-500 text-white px-6 py-4 rounded-xl shadow-2xl flex items-center gap-3 opacity-0 translate-y-4 transition-all duration-300 pointer-events-none z-[100]">
+    <span class="material-symbols-outlined">check_circle</span>
+    <span id="toast-msg">Sucesso!</span>
+</div>
+
+<script>
+// Controle de acesso (REQ08)
+const currentUser = requireAuth();
+renderUserHeader();
+
+// Mostra info de rastreabilidade (REQ03)
+document.getElementById('register-info').textContent = 
+    `Este cadastro será registrado em nome de ${currentUser.nome} (Bloco ${currentUser.bloco}, Apto ${currentUser.apto}) com a data e hora do envio.`;
+
+async function enviarIndicacao() {
+    const name = document.getElementById('pro-name').value.trim();
+    const categoryEl = document.getElementById('category');
+    const category = categoryEl.value;
+    const phone = document.getElementById('phone').value.trim();
+    const email = document.getElementById('pro-email').value.trim();
+    const description = document.getElementById('description').value.trim();
+    
+    // Reset borders
+    ['pro-name', 'phone', 'pro-email', 'description'].forEach(id => {
+        document.getElementById(id).style.borderColor = '';
+    });
+    categoryEl.style.borderColor = '';
+    
+    // Validações básicas e REQ03 (contato obrigatório)
+    let hasError = false;
+    if (!name) { document.getElementById('pro-name').style.borderColor = '#ef4444'; hasError = true; }
+    if (!category) { categoryEl.style.borderColor = '#ef4444'; hasError = true; }
+    if (!phone && !email) { 
+        document.getElementById('phone').style.borderColor = '#ef4444'; 
+        document.getElementById('pro-email').style.borderColor = '#ef4444'; 
+        hasError = true; 
+        showToast('Informe pelo menos um meio de contato (Telefone ou E-mail)!', true);
+    }
+    if (!description) { document.getElementById('description').style.borderColor = '#ef4444'; hasError = true; }
+    if (hasError) return;
+
+    const provider = {
+        nome: name,
+        categoria: category,
+        telefone: phone,
+        email: email,
+        descricao: description,
+        cadastradoPor: currentUser.userId
+    };
+
+    const submitBtn = document.querySelector('button[onclick="enviarIndicacao()"]');
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<span class="material-symbols-outlined animate-spin">progress_activity</span> Cadastrando...';
+
+    const result = await addProvider(provider);
+    if (result.success) {
+        showToast('Profissional indicado com sucesso! 🎉');
+        // Limpar formulário
+        ['pro-name', 'phone', 'pro-email', 'description'].forEach(id => document.getElementById(id).value = '');
+        categoryEl.value = '';
+    } else {
+        showToast(result.message || 'Erro ao cadastrar profissional.', true);
+    }
+    
+    submitBtn.disabled = false;
+    submitBtn.innerHTML = '<span class="material-symbols-outlined">send</span> Cadastrar Profissional';
+}
+
+function showToast(msg, isError) {
+    const toast = document.getElementById('toast');
+    document.getElementById('toast-msg').textContent = msg;
+    toast.classList.remove('bg-emerald-500', 'bg-red-500');
+    toast.classList.add(isError ? 'bg-red-500' : 'bg-emerald-500');
+    toast.style.opacity = '1';
+    toast.style.transform = 'translateY(0)';
+    setTimeout(() => { toast.style.opacity = '0'; toast.style.transform = 'translateY(1rem)'; }, 3000);
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>VizinhoPro - Painel Administrativo</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#1e3b8a",
+                        "accent": "#10b981",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#121620",
+                    },
+                    fontFamily: { "display": ["Inter", "sans-serif"] },
+                    borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen">
+    <script src="data.js"></script>
+    <script src="auth.js"></script>
+<div class="relative flex min-h-screen w-full flex-col overflow-x-hidden">
+<div class="layout-container flex h-full grow flex-col">
+<header class="flex items-center justify-between border-b border-primary/10 bg-white/80 dark:bg-background-dark/80 backdrop-blur-md px-6 md:px-12 py-4 sticky top-0 z-50">
+    <div class="flex items-center gap-3">
+        <a href="inicio.html" class="flex items-center gap-3 no-underline">
+            <div class="flex items-center justify-center size-10 rounded-lg bg-primary text-white">
+                <span class="material-symbols-outlined">admin_panel_settings</span>
+            </div>
+            <div>
+                <h2 class="text-slate-900 dark:text-white text-xl font-bold tracking-tight">Painel Administrativo</h2>
+                <p class="text-xs text-slate-400">VizinhoPro — Gestão de Moradores</p>
+            </div>
+        </a>
+    </div>
+    <div class="flex items-center gap-4">
+        <nav class="hidden md:flex items-center gap-6">
+            <a class="text-sm font-medium text-slate-600 hover:text-primary transition-colors" href="inicio.html">Início</a>
+            <a class="text-sm font-medium text-slate-600 hover:text-primary transition-colors" href="busca_e_avaliacao.html">Busca</a>
+            <a class="text-sm font-semibold text-primary underline underline-offset-4" href="cadastro_de_morador.html">Admin</a>
+        </nav>
+        <span class="text-sm font-medium text-slate-600 hidden sm:block" data-user-name></span>
+        <div class="h-10 w-10 rounded-full bg-primary text-white flex items-center justify-center font-bold text-sm" data-user-avatar></div>
+        <button data-logout class="bg-slate-100 hover:bg-red-50 hover:text-red-500 transition-all rounded-lg px-4 py-2 text-sm font-bold text-slate-600 flex items-center gap-2" title="Sair">
+            <span class="material-symbols-outlined text-lg">logout</span> Sair
+        </button>
+    </div>
+</header>
+
+<main class="flex-1 px-6 md:px-12 py-8">
+<div class="max-w-6xl mx-auto space-y-8">
+
+<!-- Tabs -->
+<div class="flex gap-2 border-b border-slate-200 dark:border-slate-800">
+    <button onclick="switchTab('moradores')" id="tab-moradores" class="tab-btn px-6 py-3 text-sm font-bold border-b-2 border-primary text-primary transition-colors flex items-center gap-2">
+        <span class="material-symbols-outlined text-lg">group</span> Gestão de Moradores
+    </button>
+    <button onclick="switchTab('lgpd')" id="tab-lgpd" class="tab-btn px-6 py-3 text-sm font-medium text-slate-500 border-b-2 border-transparent hover:text-primary transition-colors flex items-center gap-2">
+        <span class="material-symbols-outlined text-lg">shield</span> LGPD — Dados
+    </button>
+</div>
+
+<!-- Tab: Gestão de Moradores (REQ02) -->
+<div id="panel-moradores">
+    <!-- Formulário de cadastro de novo morador -->
+    <div class="bg-white dark:bg-slate-900 p-6 md:p-8 rounded-xl shadow-sm border border-slate-100 dark:border-slate-800 mb-8">
+        <h3 class="text-lg font-bold mb-1 flex items-center gap-2">
+            <span class="material-symbols-outlined text-primary">person_add</span>
+            Cadastrar Novo Morador
+        </h3>
+        <p class="text-sm text-slate-500 mb-6">Apenas a administração pode cadastrar e aprovar moradores. Moradores não podem se auto-cadastrar.</p>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="flex flex-col gap-1.5">
+                <label class="text-slate-700 dark:text-slate-300 text-sm font-semibold">Nome Completo <span class="text-red-400">*</span></label>
+                <input id="m-nome" class="w-full px-4 py-3 rounded-lg border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none text-sm" placeholder="Nome do morador" type="text"/>
+            </div>
+            <div class="flex flex-col gap-1.5">
+                <label class="text-slate-700 dark:text-slate-300 text-sm font-semibold">E-mail <span class="text-red-400">*</span></label>
+                <input id="m-email" class="w-full px-4 py-3 rounded-lg border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none text-sm" placeholder="email@exemplo.com" type="email"/>
+            </div>
+            <div class="flex flex-col gap-1.5">
+                <label class="text-slate-700 dark:text-slate-300 text-sm font-semibold">Bloco / Torre <span class="text-red-400">*</span></label>
+                <input id="m-bloco" class="w-full px-4 py-3 rounded-lg border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none text-sm" placeholder="Ex: Bloco A" type="text"/>
+            </div>
+            <div class="flex flex-col gap-1.5">
+                <label class="text-slate-700 dark:text-slate-300 text-sm font-semibold">Apartamento <span class="text-red-400">*</span></label>
+                <input id="m-apto" class="w-full px-4 py-3 rounded-lg border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none text-sm" placeholder="Ex: 102" type="text"/>
+            </div>
+            <div class="flex flex-col gap-1.5">
+                <label class="text-slate-700 dark:text-slate-300 text-sm font-semibold">Senha Inicial <span class="text-red-400">*</span></label>
+                <input id="m-senha" class="w-full px-4 py-3 rounded-lg border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none text-sm" placeholder="Mínimo 6 caracteres" type="password"/>
+            </div>
+            <div class="flex items-end">
+                <button onclick="cadastrarMorador()" class="w-full bg-primary text-white py-3 rounded-lg font-bold shadow-lg shadow-primary/20 hover:bg-primary/90 transition-all active:scale-[0.98] flex items-center justify-center gap-2">
+                    <span class="material-symbols-outlined">how_to_reg</span> Cadastrar e Aprovar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Listagem de moradores -->
+    <div class="bg-white dark:bg-slate-900 rounded-xl shadow-sm border border-slate-100 dark:border-slate-800 overflow-hidden">
+        <div class="px-6 py-4 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
+            <h3 class="text-lg font-bold flex items-center gap-2">
+                <span class="material-symbols-outlined text-primary">manage_accounts</span>
+                Moradores Cadastrados
+            </h3>
+            <span id="morador-count" class="text-sm text-slate-500 font-medium"></span>
+        </div>
+        <div id="moradores-list" class="divide-y divide-slate-100 dark:divide-slate-800">
+            <!-- Gerado via JS -->
+        </div>
+    </div>
+</div>
+
+<!-- Tab: LGPD (REQ11) -->
+<div id="panel-lgpd" class="hidden">
+    <div class="bg-white dark:bg-slate-900 p-6 md:p-8 rounded-xl shadow-sm border border-slate-100 dark:border-slate-800 mb-8">
+        <h3 class="text-lg font-bold mb-1 flex items-center gap-2">
+            <span class="material-symbols-outlined text-primary">shield</span>
+            Conformidade com LGPD — Dados de Prestadores
+        </h3>
+        <p class="text-sm text-slate-500 mb-6">Exporte ou exclua dados de prestadores de serviço mediante solicitação, em conformidade com a Lei nº 13.709/2018.</p>
+        
+        <div class="mb-6">
+            <label class="block text-sm font-medium mb-1.5 text-slate-700 dark:text-slate-300">Selecione o Prestador</label>
+            <select id="lgpd-provider" class="w-full rounded-lg border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-sm focus:ring-primary focus:border-primary max-w-md">
+                <option value="">Selecione um prestador...</option>
+            </select>
+        </div>
+
+        <div class="flex gap-4 flex-wrap">
+            <button onclick="exportarDados()" class="bg-primary text-white px-6 py-3 rounded-lg font-bold flex items-center gap-2 hover:bg-primary/90 transition-all shadow-md">
+                <span class="material-symbols-outlined">download</span> Exportar Dados (JSON)
+            </button>
+            <button onclick="excluirDados()" class="bg-red-500 text-white px-6 py-3 rounded-lg font-bold flex items-center gap-2 hover:bg-red-600 transition-all shadow-md">
+                <span class="material-symbols-outlined">delete_forever</span> Excluir Dados Permanentemente
+            </button>
+        </div>
+    </div>
+
+    <!-- Área de exportação -->
+    <div id="export-area" class="hidden bg-white dark:bg-slate-900 p-6 rounded-xl shadow-sm border border-slate-100 dark:border-slate-800">
+        <div class="flex items-center justify-between mb-4">
+            <h3 class="text-lg font-bold flex items-center gap-2">
+                <span class="material-symbols-outlined text-accent">data_object</span>
+                Dados Exportados
+            </h3>
+            <button onclick="copiarExportacao()" class="bg-accent text-white px-4 py-2 rounded-lg text-sm font-bold flex items-center gap-1 hover:bg-accent/90 transition-all">
+                <span class="material-symbols-outlined text-sm">content_copy</span> Copiar
+            </button>
+        </div>
+        <pre id="export-content" class="bg-slate-50 dark:bg-slate-800 p-4 rounded-lg text-xs overflow-auto max-h-96 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700"></pre>
+    </div>
+
+    <!-- Informações LGPD -->
+    <div class="flex items-start gap-4 p-5 rounded-xl bg-primary/5 border border-primary/10 mt-8">
+        <div class="p-2 bg-primary/20 rounded-full text-primary shrink-0">
+            <span class="material-symbols-outlined text-xl">gavel</span>
+        </div>
+        <div>
+            <h4 class="text-primary font-bold text-sm">Sobre a LGPD</h4>
+            <ul class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed mt-1 list-disc list-inside space-y-1">
+                <li>Dados de contato dos prestadores são visíveis apenas para moradores autenticados.</li>
+                <li>A administração pode exportar e excluir dados de um prestador mediante solicitação.</li>
+                <li>Não são coletados dados sensíveis além dos necessários para identificação e contato.</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+</div>
+</main>
+
+<footer class="py-8 px-6 border-t border-primary/5 flex flex-col items-center gap-4 mt-auto">
+    <div class="flex gap-6 text-slate-400 text-sm">
+        <a class="hover:text-primary" href="inicio.html">Início</a>
+        <a class="hover:text-primary" href="busca_e_avaliacao.html">Busca</a>
+        <a class="hover:text-primary" href="indicar_profissional.html">Indicar</a>
+    </div>
+    <p class="text-slate-400 text-xs">© 2024 VizinhoPro Soluções Condominiais.</p>
+</footer>
+</div>
+</div>
+
+<!-- Toast -->
+<div id="toast" class="fixed bottom-6 right-6 bg-emerald-500 text-white px-6 py-4 rounded-xl shadow-2xl flex items-center gap-3 opacity-0 translate-y-4 transition-all duration-300 pointer-events-none z-[100]">
+    <span class="material-symbols-outlined">check_circle</span>
+    <span id="toast-msg">Sucesso!</span>
+</div>
+
+<!-- Modal de confirmação -->
+<div id="modal-overlay" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-[90] hidden items-center justify-center">
+    <div class="bg-white dark:bg-slate-900 rounded-2xl p-8 max-w-md w-full mx-4 shadow-2xl" id="modal-content">
+        <div class="text-center">
+            <div class="mx-auto w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mb-4">
+                <span class="material-symbols-outlined text-red-500 text-3xl">warning</span>
+            </div>
+            <h3 id="modal-title" class="text-xl font-bold text-slate-900 dark:text-white mb-2">Confirmar Exclusão</h3>
+            <p id="modal-desc" class="text-slate-500 text-sm mb-6">Esta ação é irreversível.</p>
+            <div class="flex gap-3">
+                <button onclick="closeModal()" class="flex-1 py-3 rounded-lg border border-slate-200 dark:border-slate-700 font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">Cancelar</button>
+                <button id="modal-confirm" class="flex-1 py-3 rounded-lg bg-red-500 text-white font-semibold hover:bg-red-600 transition-colors shadow-md">Excluir</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Controle de acesso — somente admin (REQ02, REQ08)
+const currentUser = requireAdmin();
+renderUserHeader();
+
+// Inicializar (async)
+(async function init() {
+    await renderMoradores();
+})();
+
+// --- TABS ---
+async function switchTab(tab) {
+    document.querySelectorAll('.tab-btn').forEach(b => {
+        b.classList.remove('border-primary', 'text-primary', 'font-bold');
+        b.classList.add('border-transparent', 'text-slate-500', 'font-medium');
+    });
+    document.getElementById('tab-' + tab).classList.add('border-primary', 'text-primary', 'font-bold');
+    document.getElementById('tab-' + tab).classList.remove('border-transparent', 'text-slate-500', 'font-medium');
+    
+    document.getElementById('panel-moradores').classList.toggle('hidden', tab !== 'moradores');
+    document.getElementById('panel-lgpd').classList.toggle('hidden', tab !== 'lgpd');
+    
+    if (tab === 'lgpd') await populateLgpdSelect();
+}
+
+// --- MORADORES (REQ02) ---
+async function renderMoradores() {
+    const container = document.getElementById('moradores-list');
+    const allUsers = await getUsers();
+    const users = allUsers.filter(u => u.role === 'morador');
+    document.getElementById('morador-count').textContent = `${users.length} morador${users.length !== 1 ? 'es' : ''}`;
+    
+    if (users.length === 0) {
+        container.innerHTML = '<p class="text-slate-400 text-center py-8">Nenhum morador cadastrado.</p>';
+        return;
+    }
+    
+    container.innerHTML = users.map(u => {
+        const initials = u.nome.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase();
+        const statusClass = u.ativo 
+            ? 'bg-emerald-50 text-emerald-700 dark:bg-emerald-900/20 dark:text-emerald-400' 
+            : 'bg-red-50 text-red-700 dark:bg-red-900/20 dark:text-red-400';
+        const statusText = u.ativo ? 'Ativo' : 'Desativado';
+        const statusIcon = u.ativo ? 'check_circle' : 'cancel';
+        const toggleText = u.ativo ? 'Desativar' : 'Reativar';
+        const toggleColor = u.ativo 
+            ? 'text-red-500 hover:bg-red-50' 
+            : 'text-emerald-500 hover:bg-emerald-50';
+        const date = new Date(u.data_cadastro).toLocaleDateString('pt-BR');
+        
+        return `
+        <div class="flex items-center justify-between px-6 py-4 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+            <div class="flex items-center gap-4">
+                <div class="h-10 w-10 rounded-full bg-primary/10 text-primary flex items-center justify-center font-bold text-sm flex-shrink-0">${initials}</div>
+                <div>
+                    <p class="font-semibold text-sm">${u.nome}</p>
+                    <p class="text-xs text-slate-500">${u.email} — Bloco ${u.bloco}, Apto ${u.apto}</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-4">
+                <span class="text-xs text-slate-400">Desde ${date}</span>
+                <span class="inline-flex items-center gap-1 text-xs font-medium px-2 py-1 rounded-full ${statusClass}">
+                    <span class="material-symbols-outlined text-xs">${statusIcon}</span> ${statusText}
+                </span>
+                <button onclick="alternarMorador('${u.id}')" class="text-sm font-medium ${toggleColor} px-3 py-1.5 rounded-lg transition-colors">
+                    ${toggleText}
+                </button>
+            </div>
+        </div>`;
+    }).join('');
+}
+
+async function cadastrarMorador() {
+    const nome = document.getElementById('m-nome').value.trim();
+    const email = document.getElementById('m-email').value.trim();
+    const bloco = document.getElementById('m-bloco').value.trim();
+    const apto = document.getElementById('m-apto').value.trim();
+    const senha = document.getElementById('m-senha').value.trim();
+    
+    // Reset
+    ['m-nome', 'm-email', 'm-bloco', 'm-apto', 'm-senha'].forEach(id => {
+        document.getElementById(id).style.borderColor = '';
+    });
+    
+    let hasError = false;
+    if (!nome) { document.getElementById('m-nome').style.borderColor = '#ef4444'; hasError = true; }
+    if (!email || !email.includes('@')) { document.getElementById('m-email').style.borderColor = '#ef4444'; hasError = true; }
+    if (!bloco) { document.getElementById('m-bloco').style.borderColor = '#ef4444'; hasError = true; }
+    if (!apto) { document.getElementById('m-apto').style.borderColor = '#ef4444'; hasError = true; }
+    if (!senha || senha.length < 6) { document.getElementById('m-senha').style.borderColor = '#ef4444'; hasError = true; }
+    
+    if (hasError) {
+        showToast('Preencha todos os campos obrigatórios!', true);
+        return;
+    }
+    
+    const result = await addUser({ nome, email, bloco, apto, senha });
+    if (result.success) {
+        showToast('Morador cadastrado e aprovado! 🎉');
+        ['m-nome', 'm-email', 'm-bloco', 'm-apto', 'm-senha'].forEach(id => document.getElementById(id).value = '');
+        await renderMoradores();
+    } else {
+        showToast(result.message, true);
+    }
+}
+
+// REQ02 — Desativar/reativar morador (revoga acesso imediatamente)
+async function alternarMorador(userId) {
+    await toggleUserActive(userId);
+    await renderMoradores();
+    showToast('Status do morador atualizado.');
+}
+
+// --- LGPD (REQ11) ---
+async function populateLgpdSelect() {
+    const select = document.getElementById('lgpd-provider');
+    const providers = await getProviders();
+    select.innerHTML = '<option value="">Selecione um profissional...</option>';
+    providers.forEach(p => {
+        const opt = document.createElement('option');
+        opt.value = p.id;
+        opt.textContent = `${p.nome} (${getCategoriaLabel(p.categoria)})`;
+        select.appendChild(opt);
+    });
+}
+
+async function executarExportacao() {
+    const id = document.getElementById('lgpd-provider').value;
+    if (!id) { showToast('Selecione um profissional!', true); return; }
+    
+    const data = await exportProviderData(id);
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `vizinhopro_dados_prestador_${id}.json`;
+    a.click();
+    showToast('Dados exportados com sucesso! 📄');
+}
+
+let pendingDeleteId = null;
+function confirmarExclusao() {
+    pendingDeleteId = document.getElementById('lgpd-provider').value;
+    if (!pendingDeleteId) { showToast('Selecione um profissional!', true); return; }
+    
+    document.getElementById('modal-title').textContent = 'Confirmar Exclusão de Dados';
+    document.getElementById('modal-desc').textContent = 'Todos os dados do prestador e suas avaliações serão removidos permanentemente, conforme solicitado via LGPD.';
+    document.getElementById('modal-confirm').onclick = executarExclusao;
+    document.getElementById('modal-container').classList.remove('hidden');
+    document.getElementById('modal-container').classList.add('flex');
+}
+
+async function executarExclusao() {
+    if (!pendingDeleteId) return;
+    await deleteProviderData(pendingDeleteId);
+    showToast('Dados excluídos permanentemente conforme LGPD.');
+    closeModal();
+    await populateLgpdSelect();
+}
+
+function closeModal() {
+    document.getElementById('modal-container').classList.add('hidden');
+    document.getElementById('modal-container').classList.remove('flex');
+    pendingDeleteId = null;
+}
+
+document.getElementById('modal-container').addEventListener('click', function(e) {
+    if (e.target === this) closeModal();
+});
+
+function showToast(msg, isError) {
+    const toast = document.getElementById('toast');
+    document.getElementById('toast-msg').textContent = msg;
+    toast.classList.remove('bg-emerald-500', 'bg-red-500');
+    toast.classList.add(isError ? 'bg-red-500' : 'bg-emerald-500');
+    toast.style.opacity = '1';
+    toast.style.transform = 'translateY(0)';
+    setTimeout(() => { toast.style.opacity = '0'; toast.style.transform = 'translateY(1rem)'; }, 3000);
+}
+</script>
+</body>

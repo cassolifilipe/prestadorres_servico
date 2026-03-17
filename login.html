@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>VizinhoPro - Login</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#1e3b8a",
+                        "accent": "#10b981",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#121620",
+                    },
+                    fontFamily: { "display": ["Inter", "sans-serif"] },
+                    borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background-light font-display text-slate-900 antialiased">
+    <script src="data.js"></script>
+    <script src="auth.js"></script>
+    <div class="relative flex min-h-screen">
+        <!-- Painel esquerdo decorativo -->
+        <div class="hidden lg:flex lg:flex-1 bg-primary relative overflow-hidden items-center justify-center">
+            <div class="absolute inset-0 opacity-10" style="background-image: radial-gradient(circle at 2px 2px, white 1px, transparent 0); background-size: 24px 24px;"></div>
+            <div class="absolute -bottom-24 -right-24 h-96 w-96 rounded-full bg-blue-400/20 blur-3xl"></div>
+            <div class="absolute -top-24 -left-24 h-96 w-96 rounded-full bg-emerald-400/10 blur-3xl"></div>
+            <div class="relative z-10 text-white text-center px-12 max-w-lg">
+                <div class="flex items-center justify-center gap-3 mb-8">
+                    <span class="material-symbols-outlined text-5xl">handshake</span>
+                    <h1 class="text-4xl font-black tracking-tight">VizinhoPro</h1>
+                </div>
+                <p class="text-xl text-blue-100 font-medium leading-relaxed">
+                    A rede de confiança do seu condomínio. Encontre profissionais qualificados e recomendados por seus vizinhos.
+                </p>
+                <div class="flex items-center justify-center gap-6 mt-12">
+                    <div class="flex items-center gap-2 text-blue-200">
+                        <span class="material-symbols-outlined">verified</span>
+                        <span class="text-sm font-medium">Profissionais verificados</span>
+                    </div>
+                    <div class="flex items-center gap-2 text-blue-200">
+                        <span class="material-symbols-outlined">shield</span>
+                        <span class="text-sm font-medium">Acesso seguro</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Painel de login -->
+        <div class="flex-1 flex items-center justify-center py-12 px-6">
+            <div class="w-full max-w-md space-y-8">
+                <!-- Logo mobile -->
+                <div class="flex items-center justify-center gap-2 text-primary lg:hidden mb-4">
+                    <span class="material-symbols-outlined text-4xl font-bold">handshake</span>
+                    <h1 class="text-3xl font-black tracking-tight">VizinhoPro</h1>
+                </div>
+                
+                <div class="text-center lg:text-left">
+                    <h2 class="text-3xl font-extrabold text-slate-900 tracking-tight">Entrar na Plataforma</h2>
+                    <p class="text-slate-500 mt-2">Acesso exclusivo para moradores e administração do condomínio.</p>
+                </div>
+
+                <div class="bg-white p-8 rounded-2xl shadow-lg border border-slate-100 space-y-6">
+                    <div id="error-box" class="hidden items-center gap-3 p-4 bg-red-50 border border-red-200 rounded-xl text-red-700 text-sm font-medium">
+                        <span class="material-symbols-outlined text-lg">error</span>
+                        <span id="error-msg">Credenciais inválidas.</span>
+                    </div>
+
+                    <div class="space-y-1.5">
+                        <label class="text-slate-700 text-sm font-semibold" for="email">E-mail</label>
+                        <div class="relative">
+                            <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-lg">mail</span>
+                            <input id="email" class="w-full pl-11 pr-4 py-3.5 rounded-xl border border-slate-200 bg-slate-50 focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all outline-none" placeholder="seu.email@condominio.com" type="email" autocomplete="email"/>
+                        </div>
+                    </div>
+
+                    <div class="space-y-1.5">
+                        <label class="text-slate-700 text-sm font-semibold" for="senha">Senha</label>
+                        <div class="relative">
+                            <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-lg">lock</span>
+                            <input id="senha" class="w-full pl-11 pr-12 py-3.5 rounded-xl border border-slate-200 bg-slate-50 focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all outline-none" placeholder="••••••••" type="password" autocomplete="current-password"/>
+                            <button type="button" id="toggle-pass" class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-primary transition-colors">
+                                <span class="material-symbols-outlined text-lg">visibility</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <button id="login-btn" class="w-full bg-primary text-white py-4 rounded-xl font-bold text-lg shadow-lg shadow-primary/20 hover:bg-primary/90 transition-all active:scale-[0.98] flex items-center justify-center gap-2">
+                        <span class="material-symbols-outlined">login</span>
+                        Entrar
+                    </button>
+                </div>
+
+                <div class="flex items-start gap-4 p-4 rounded-xl bg-primary/5 border border-primary/10">
+                    <span class="material-symbols-outlined text-primary text-xl flex-shrink-0 mt-0.5">info</span>
+                    <div class="text-sm text-slate-600 leading-relaxed">
+                        <p class="font-semibold text-primary mb-1">Acesso restrito</p>
+                        <p>O cadastro de moradores é feito exclusivamente pela administração do condomínio. Caso não possua acesso, entre em contato com a administração.</p>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-3 justify-center text-xs text-slate-400">
+                    <span class="material-symbols-outlined text-sm">verified_user</span>
+                    Protegido em conformidade com a LGPD
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Se já está logado, redireciona
+        if (getCurrentUser()) {
+            window.location.href = 'inicio.html';
+        }
+
+        const emailInput = document.getElementById('email');
+        const senhaInput = document.getElementById('senha');
+        const loginBtn = document.getElementById('login-btn');
+        const errorBox = document.getElementById('error-box');
+        const togglePass = document.getElementById('toggle-pass');
+
+        togglePass.addEventListener('click', () => {
+            const isPass = senhaInput.type === 'password';
+            senhaInput.type = isPass ? 'text' : 'password';
+            togglePass.querySelector('span').textContent = isPass ? 'visibility_off' : 'visibility';
+        });
+
+        async function doLogin() {
+            const email = emailInput.value.trim();
+            const senha = senhaInput.value.trim();
+
+            if (!email || !senha) {
+                errorBox.classList.remove('hidden');
+                errorBox.classList.add('flex');
+                document.getElementById('error-msg').textContent = 'Preencha todos os campos.';
+                return;
+            }
+
+            loginBtn.disabled = true;
+            loginBtn.innerHTML = '<span class="material-symbols-outlined animate-spin">progress_activity</span> Entrando...';
+
+            const result = await login(email, senha);
+            if (result.success) {
+                window.location.href = 'inicio.html';
+            } else {
+                errorBox.classList.remove('hidden');
+                errorBox.classList.add('flex');
+                // REQ01: mensagem genérica sem revelar qual campo está incorreto
+                document.getElementById('error-msg').textContent = 'Credenciais inválidas.';
+                senhaInput.value = '';
+                loginBtn.disabled = false;
+                loginBtn.innerHTML = '<span class="material-symbols-outlined">login</span> Entrar';
+            }
+        }
+
+        loginBtn.addEventListener('click', doLogin);
+        senhaInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') doLogin(); });
+        emailInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') doLogin(); });
+    </script>
+</body>
+</html>
